@@ -1,0 +1,88 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="nila.list_agent">
+      <field name="name">Agent</field>
+      <field name="model">nila.agent</field>
+      <field name="arch" type="xml">
+        <list create="false">
+          <field name="name" string="Device ID"/>
+          <field name="ip"/>
+          <field name="last_seen"/>
+          <field name="create_date" string="Registered At"/>
+          <field name="pull_interval"/>
+          <field name="is_operational"/>
+          <field name="location"/>
+        </list>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="nila.form_agent">
+      <field name="name">Agent</field>
+      <field name="model">nila.agent</field>
+      <field name="arch" type="xml">
+          <form create="false">
+            <sheet>
+                <group>
+                    <group>
+                        <field name="pull_interval"/>
+                        <field name="location"/>
+                    </group>
+                    <group>
+                        <field name="name" string="Device ID" readonly="1"/>
+                        <field name="ip" readonly="1"/>
+                        <field name="last_seen" readonly="1"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page name="notes">
+                        <field name="notes"/>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="nila.action_window_agent">
+      <field name="name">Agent</field>
+      <field name="res_model">nila.agent</field>
+      <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem name="Agent" id="nila.menu_agent_list" parent="nila.menu_root"
+              action="nila.action_window_agent"/>
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="nila.action_server">
+      <field name="name">nila server</field>
+      <field name="model_id" ref="model_nila_nila"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="nila.menu_1" parent="nila.menu_root"/>
+    <menuitem name="Menu 2" id="nila.menu_2" parent="nila.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="nila.menu_1_list" parent="nila.menu_1"
+              action="nila.action_window"/>
+    <menuitem name="Server to list" id="nila" parent="nila.menu_2"
+              action="nila.action_server"/>
+-->
+  </data>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_nila_agent,nila.agent,model_nila_agent,base.group_user,1,1,1,1
+access_nila_hoster,nila.hoster,model_nila_hoster,base.group_user,1,1,1,1

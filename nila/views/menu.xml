@@ -1,0 +1,5 @@
+<odoo>
+    <data>
+        <menuitem name="Nila" id="nila.menu_root"/>
+    </data>
+</odoo>
