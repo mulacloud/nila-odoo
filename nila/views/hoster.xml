@@ -25,12 +25,21 @@
                         <field name="username"/>
                         <field name="password"/>
                         <field name="os_type"/>
+                        <field name="default_network"/>
+                        <field name="default_netmask"/>
+                        <field name="default_gateway"/>
                     </group>
                     <group>
                         <field name="name"/>
                         <field name="ip"/>
+                        <field name="port"/>
                         <field name="agent_id"  options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"/>
                     </group>
+                    <notebook>
+                        <page string="Stat Command">
+                            <field name="stat_command"/>
+                        </page>
+                    </notebook>
                 </group>
             </sheet>
         </form>

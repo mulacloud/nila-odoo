@@ -1,0 +1,54 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="nila.list_image">
+      <field name="name">Agent</field>
+      <field name="model">nila.image</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+        </list>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="nila.form_image">
+      <field name="name">image</field>
+      <field name="model">nila.image</field>
+      <field name="arch" type="xml">
+          <form>
+              <sheet>
+                  <group>
+                 <field name="name"/>
+                 <field name="zones_type"/>
+                 <field name="hoster_id"/>
+             </group>
+                 <notebook>
+                     <page string="Create Step">
+                         <field name="create_step" />
+                     </page>
+                     <page string="Start Step">
+                         <field name="start_step" />
+                     </page>
+                     <page string="Stop Step">
+                         <field name="stop_step" />
+                     </page>
+                     <page string="Destroy Step">
+                         <field name="destroy_step" />
+                     </page>
+                 </notebook>
+            </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="nila.action_window_image">
+      <field name="name">image</field>
+      <field name="res_model">nila.image</field>
+      <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem name="Image" id="nila.menu_image_list" parent="nila.menu_root"
+              action="nila.action_window_image"/>
+  </data>
+</odoo>

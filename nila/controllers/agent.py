@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 import json
+import base64
 from datetime import datetime
 
 from odoo import http
@@ -10,15 +11,25 @@ class Agent(http.Controller):
     @http.route('/nila/agent/register', csrf=False, methods=['POST'], auth='nila_api_key', type='json')
     def register(self, name, **kw):
         agent_obj = request.env['nila.agent'].sudo()
-        if agent_obj.search([('name', '=', name)]):
-            return {'msg': 'already exists', 'code': 400}
-        agent_obj.create({
+        hoster_obj = request.env['nila.hoster'].sudo()
+        agent = agent_obj.search([('name', '=', name)])
+        if agent:
+            hoster = []
+            for hs in hoster_obj.search([("agent_id", "=", agent.id)]):
+                hoster.append({
+                    "address": hs.address,
+                    "username": hs.username,
+                    "password": hs.password,
+                    "stat_command": base64.b64encode(hs.stat_command.encode("utf-8"))
+                })
+            return {'msg': 'already exists', 'code': 400,'hoster': hoster, 'pull_interval': agent.pull_interval}
+        agent = agent_obj.create({
             'name': name,
             'ip': kw['ip'],
             'last_seen': datetime.now(),
             'is_operational': True
         })
-        return {'msg': 'ok'}
+        return {'msg': 'ok', 'pull_interval': agent.pull_interval, 'code': 201}
 
 #     @http.route('/nila/nila/objects', auth='public')
 #     def list(self, **kw):

@@ -22,6 +22,9 @@
         'views/menu.xml',
         'views/agent.xml',
         'views/hoster.xml',
+        'views/job.xml',
+        'views/image.xml',
+        'views/zones.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode
