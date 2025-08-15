@@ -24,14 +24,20 @@ class Zones(models.Model):
 
     DRAFT = "D"
     NEW = "N"
+    CREATING = "C"
     RUN = "R"
+    WAIT_SUSPEND = "Q"
     SUSPEND = "S"
+    WAIT_WAKE = "W"
 
     ORDER_STATE = [
         (DRAFT, "Draft"),
         (NEW, "New"),
+        (CREATING, "Creating"),
         (RUN, "Ready"),
+        (WAIT_SUSPEND, "Waiting Suspend"),
         (SUSPEND, "Suspend"),
+        (WAIT_WAKE, "Waiting Wakeup"),
     ]
 
     @api.onchange("image_id")
@@ -46,8 +52,8 @@ class Zones(models.Model):
 
     def default_zones_id(self):
         return uuid.uuid4()
-    
-    def submit(self):
+
+    def refresh(self):
         for rec in self:
             ch_dom = [
                 ("ip","=",rec.ip),
@@ -77,13 +83,21 @@ class Zones(models.Model):
             destroy_step = rec.image_id.destroy_step.format(
                 zones_id = rec.zones_id)
             rec.write({
-                "order_state": self.NEW,
                 "create_step": create_step,
                 "start_step": start_step,
                 "stop_step": stop_step,
                 "destroy_step": destroy_step,
             })
 
+
+    
+    def submit(self):
+        for rec in self:
+            rec.refresh()
+            rec.write({
+                "order_state": self.NEW,
+            })
+            
     
     def run(self):
         for rec in self:
@@ -91,7 +105,7 @@ class Zones(models.Model):
                 "hoster_id": rec.hoster_id.id,
                 "shell": rec.create_step
             })
-            rec.write({"order_state": self.RUN})
+            rec.write({"order_state": self.CREATING})
                 
     def suspend(self):
         for rec in self:
@@ -99,7 +113,7 @@ class Zones(models.Model):
                 "hoster_id": rec.hoster_id.id,
                 "shell": rec.stop_step
             })
-            rec.write({"order_state": self.SUSPEND})
+            rec.write({"order_state": self.WAIT_SUSPEND})
     
     def start(self):
         for rec in self:
@@ -107,7 +121,7 @@ class Zones(models.Model):
                 "hoster_id": rec.hoster_id.id,
                 "shell": rec.start_step
             })
-            rec.write({"order_state": self.RUN})
+            rec.write({"order_state": self.WAIT_WAKE})
 
     def unlink(self):
         for rec in self:
@@ -123,8 +137,8 @@ class Zones(models.Model):
     power_on = fields.Boolean(default=False)
     netmask = fields.Char(required=True)
     gateway = fields.Char(required=True)
-    memory = fields.Integer(required=True, default=512)
-    disk = fields.Integer(required=True, default=1)
+    memory = fields.Integer(required=True, default=512, string="Memory (MB)")
+    disk = fields.Integer(required=True, default=1, string="Disk (GB)")
     zones_id = fields.Char(default=default_zones_id)
     zones_type = fields.Selection(TYPE, default=ILLUMOS, related="image_id.zones_type")
     order_state = fields.Selection(ORDER_STATE, default=DRAFT)

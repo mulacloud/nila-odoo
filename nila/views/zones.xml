@@ -9,6 +9,7 @@
           <field name="name"/>
           <field name="hoster_id"/>
           <field name="zones_type"/>
+          <field name="image_id"/>
           <field name="ip"/>
           <field name="netmask"/>
           <field name="gateway"/>

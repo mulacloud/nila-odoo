@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 from odoo import models, fields, api
 
@@ -11,6 +12,15 @@ class Agent(models.Model):
     def _compute_display_name(self):
         for rec in self:
             rec.display_name = "[%s] %s" % (self.location, self.name)
+
+    def _check_is_operational(self):
+        for rec in self:
+            dur = datetime.now() - rec.last_seen
+            if dur.total_seconds() > rec.pull_interval:
+                state = False
+            else:
+                state = True
+            rec.write({'is_operational': state})
 
     name = fields.Char()
     ip = fields.Char()

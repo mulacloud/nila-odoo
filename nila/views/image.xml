@@ -7,6 +7,8 @@
       <field name="arch" type="xml">
         <list>
           <field name="name"/>
+          <field name="zones_type"/>
+          <field name="hoster_id"/>
         </list>
       </field>
     </record>

@@ -19,6 +19,8 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/ir_cron.xml',
+        'data/ir_action.xml',
         'views/menu.xml',
         'views/agent.xml',
         'views/hoster.xml',

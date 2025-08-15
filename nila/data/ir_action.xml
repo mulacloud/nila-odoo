@@ -1,0 +1,32 @@
+<odoo>
+    <record model="ir.actions.server" id="suspend_zones">
+        <field name="name">Suspend Zones</field>
+        <field name="model_id" ref="model_nila_zones"/>
+        <field name="binding_model_id" ref="model_nila_zones"/>
+        <field name="state">code</field>
+        <field name="code">
+            for rec in records:
+               rec.suspend()
+        </field>
+    </record>
+    <record model="ir.actions.server" id="wake_zones">
+        <field name="name">Wake Zones</field>
+        <field name="model_id" ref="model_nila_zones"/>
+        <field name="binding_model_id" ref="model_nila_zones"/>
+        <field name="state">code</field>
+        <field name="code">
+            for rec in records:
+               rec.start()
+        </field>
+    </record>
+    <record model="ir.actions.server" id="refresh_step">
+        <field name="name">Refresh stop</field>
+        <field name="model_id" ref="model_nila_zones"/>
+        <field name="binding_model_id" ref="model_nila_zones"/>
+        <field name="state">code</field>
+        <field name="code">
+            for rec in records:
+               rec.refresh()
+        </field>
+    </record>
+</odoo>

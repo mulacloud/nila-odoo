@@ -7,12 +7,14 @@ class Hoster(models.Model):
     _name = 'nila.hoster'
     _description = 'nila.hoster'
 
-    SMARTOS = "S"
+    ILLUMOS = "I"
     FREEBSD = "F"
+    LINUX = "L"
 
     TYPE = [
-        (SMARTOS, 'SmartOS'),
-        (FREEBSD, "FreeBSD")
+        (ILLUMOS, 'Illumos'),
+        (FREEBSD, "FreeBSD"),
+        (LINUX, "GNU/Linux"),
     ]
 
     @property
@@ -22,7 +24,7 @@ class Hoster(models.Model):
     name = fields.Char()
     ip = fields.Char()
     port = fields.Integer()
-    os_type = fields.Selection(TYPE, default=SMARTOS)
+    os_type = fields.Selection(TYPE, default=ILLUMOS)
     username = fields.Char()
     password = fields.Char()
     agent_id = fields.Many2one('nila.agent')

@@ -7,6 +7,9 @@
       <field name="arch" type="xml">
         <list>
           <field name="name"/>
+          <field name="create_date" string="Submited date"/>
+          <field name="write_date" string="Reported date"/>
+          <field name="hoster_id"/>
           <field name="state"/>
         </list>
       </field>

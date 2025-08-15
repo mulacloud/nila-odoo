@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 import json
 import base64
+from datetime import datetime
 
 from odoo import http
 from odoo.http import request
@@ -13,6 +14,7 @@ class Job(http.Controller):
         job_obj = request.env['nila.job'].sudo()
         zones_obj = request.env['nila.zones'].sudo()
         agent = agent_obj.search([('name', '=', name)], limit=1)
+        agent.write({"last_seen": datetime.now()})
         job = job_obj.search([
             "&", 
             ('agent_id', "=", agent.id),
@@ -50,7 +52,15 @@ class Job(http.Controller):
                 ]
                 zones = zones_obj.search(zdom)
                 for zn in zones:
-                    zn.write({'power_on': st['power_on']})
+                    power = st['power_on']
+                    order = zn.order_state
+                    if power:
+                        if order != zones_obj.WAIT_WAKE:
+                            order = zones_obj.RUN
+                    else:
+                        if order != zones_obj.WAIT_SUSPEND:
+                            order = zones_obj.SUSPEND
+                    zn.write({'power_on': st['power_on'], "order_state": order})
 
         return {'job': result_out}
 
